@@ -1,0 +1,6 @@
+[
+    { "command": "to_bin" },
+    { "command": "to_oct" },
+    { "command": "to_dec" },
+    { "command": "to_hex" }
+]
