@@ -1,6 +1,7 @@
 [
-    { "command": "to_bin" },
-    { "command": "to_oct" },
-    { "command": "to_dec" },
-    { "command": "to_hex" }
+    { "caption": "-" },
+    { "caption": "To Bin", "command": "to_base_context", "args": {"base": 2} },
+    { "caption": "To Oct", "command": "to_base_context", "args": {"base": 8} },
+    { "caption": "To Dec", "command": "to_base_context", "args": {"base": 10} },
+    { "caption": "To Hex", "command": "to_base_context", "args": {"base": 16} },
 ]
