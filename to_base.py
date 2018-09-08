@@ -22,6 +22,3 @@ class ToBaseContextCommand(sublime_plugin.TextCommand):
                 return True
 
         return False
-
-    def description(self):
-        return "Convert to base"

@@ -1,6 +1,9 @@
 supported_bases = [2, 8, 10, 16]
 max_string_length = 18
 
+import sublime
+import sublime_plugin
+
 def from_base(s : str, bases : list):
     for base in bases:
         val = val_from_base(s, base)
@@ -14,9 +17,9 @@ def val_from_base(s : str, base : int):
     if base == 2:
         valid_input_format = s[:2].lower() == "0b"
     if base == 8:
-        valid_input_format = s[0].lower() == "0"
+        valid_input_format = s[0] == "0" and len(s) > 1
     if base == 10:
-        valid_input_format = s[0] != "0" and s.isdigit()
+        valid_input_format = (s[0] != "0" or len(s) == 1) and s.isdigit()
     if base == 16:
         valid_input_format = s[:2].lower() == "0x"
 
@@ -28,11 +31,39 @@ def val_from_base(s : str, base : int):
     except ValueError:
         return None
 
+def split_integer_suffix(s : str):
+    u_count = 0
+    l_count = 0
+
+    for c in s[len(s)-min(len(s)-1, 3):].lower():
+        if "u" == c:
+            u_count += 1
+            if u_count > 1:
+                return (None, None)
+
+        elif "l" == c:
+            l_count += 1
+            if(l_count > 2):
+                return (None, None)
+
+    suffix = s[len(s) - (u_count + l_count):]
+    s = s[:len(s)-len(suffix)]
+
+    return (s, suffix)
+
 def to_base(s : str, base : int):
     if not base in supported_bases:
         return None
 
-    if not 1 <= len(s) <= max_string_length:
+    if not len(s) > 0:
+        return None
+
+    (s, suffix) = split_integer_suffix(s)
+
+    if s == None or suffix == None:
+        return None
+
+    if not len(s) <= max_string_length:
         return None
 
     bases = list(supported_bases)
@@ -47,7 +78,7 @@ def to_base(s : str, base : int):
     if(val == None):
         return None
 
-    return val_to_base(val, base)
+    return val_to_base(val, base) + suffix
 
 def val_to_base(val : int, base : int):
     if base == 2:
