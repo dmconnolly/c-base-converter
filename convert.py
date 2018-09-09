@@ -1,10 +1,9 @@
 import sublime
 import sublime_plugin
 
-# TODO: Move to configurable settings
-max_string_length = 18
-
 supported_bases = [2, 8, 10, 16]
+
+settings = sublime.load_settings('c-base-converter.sublime-settings')
 
 def from_base(s : str, bases : list):
     for base in bases:
@@ -33,7 +32,7 @@ def val_from_base(s : str, base : int):
     except ValueError:
         return None
 
-def split_integer_suffix(s : str):
+def split_suffix(s : str):
     u_count = 0
     l_count = 0
 
@@ -60,12 +59,9 @@ def to_base(s : str, base : int):
     if not len(s) > 0:
         return None
 
-    (s, suffix) = split_integer_suffix(s)
+    (s, suffix) = split_suffix(s)
 
-    if s == None or suffix == None:
-        return None
-
-    if not len(s) <= max_string_length:
+    if s == None or len(s) > settings.get('max_value_length'):
         return None
 
     bases = list(supported_bases)

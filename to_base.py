@@ -3,10 +3,9 @@ import sublime_plugin
 
 from . import convert
 
-# TODO: Configurable key bindings
+# TODO: Extract prefix (0b, 0, 0x) before conversion to exclude it from max_value_length comparison
 
-# TODO: Move to configurable settings
-context_menu_options_enabled = True
+settings = sublime.load_settings('c-base-converter.sublime-settings')
 
 class ToBaseCommand(sublime_plugin.TextCommand):
     def run(self, edit : sublime.Edit, base : int):
@@ -20,7 +19,7 @@ class ToBaseCommand(sublime_plugin.TextCommand):
                 self.view.replace(edit, region, val)
 
     def is_visible(self, base):
-        if not context_menu_options_enabled:
+        if not settings.get('context_menu_options_enabled'):
             return False
 
         for region in self.view.sel():
@@ -32,7 +31,7 @@ class ToBaseCommand(sublime_plugin.TextCommand):
         return False
 
     def is_enabled(self):
-        return context_menu_options_enabled
+        return settings.get('context_menu_options_enabled')
 
 class ToBasePromptCommand(sublime_plugin.WindowCommand):
     first_opened = True
