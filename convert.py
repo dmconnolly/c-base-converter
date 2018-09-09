@@ -20,7 +20,7 @@ def val_from_base(s : str, base : int):
     if base == 8:
         valid_input_format = s[0] == "0" and len(s) > 1
     if base == 10:
-        valid_input_format = (s[0] != "0" or len(s) == 1) and s.isdigit()
+        valid_input_format = s[0] != "0" and s.isdigit()
     if base == 16:
         valid_input_format = s[:2].lower() == "0x"
 
@@ -61,7 +61,7 @@ def to_base(s : str, base : int):
 
     (s, suffix) = split_suffix(s)
 
-    if s == None or len(s) > settings.get('max_value_length'):
+    if s == None or len(s) > settings.get('max_value_length', 18):
         return None
 
     bases = list(supported_bases)

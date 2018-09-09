@@ -9,7 +9,6 @@ settings = sublime.load_settings('c-base-converter.sublime-settings')
 
 class ToBaseCommand(sublime_plugin.TextCommand):
     def run(self, edit : sublime.Edit, base : int):
-
         for region in self.view.sel():
             s = self.view.substr(region)
 
@@ -19,7 +18,7 @@ class ToBaseCommand(sublime_plugin.TextCommand):
                 self.view.replace(edit, region, val)
 
     def is_visible(self, base):
-        if not settings.get('context_menu_options_enabled'):
+        if not settings.get('context_menu_options_enabled', True):
             return False
 
         for region in self.view.sel():
@@ -31,7 +30,7 @@ class ToBaseCommand(sublime_plugin.TextCommand):
         return False
 
     def is_enabled(self):
-        return settings.get('context_menu_options_enabled')
+        return settings.get('context_menu_options_enabled', True)
 
 class ToBasePromptCommand(sublime_plugin.WindowCommand):
     first_opened = True
