@@ -1,7 +1,7 @@
 [
     { "caption": "-" },
-    { "caption": "To Bin", "command": "to_base_context", "args": {"base": 2} },
-    { "caption": "To Oct", "command": "to_base_context", "args": {"base": 8} },
-    { "caption": "To Dec", "command": "to_base_context", "args": {"base": 10} },
-    { "caption": "To Hex", "command": "to_base_context", "args": {"base": 16} },
+    { "caption": "To Bin", "command": "to_base", "args": {"base": 2} },
+    { "caption": "To Oct", "command": "to_base", "args": {"base": 8} },
+    { "caption": "To Dec", "command": "to_base", "args": {"base": 10} },
+    { "caption": "To Hex", "command": "to_base", "args": {"base": 16} }
 ]

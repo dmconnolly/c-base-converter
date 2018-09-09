@@ -1,8 +1,10 @@
-supported_bases = [2, 8, 10, 16]
-max_string_length = 18
-
 import sublime
 import sublime_plugin
+
+# TODO: Move to configurable settings
+max_string_length = 18
+
+supported_bases = [2, 8, 10, 16]
 
 def from_base(s : str, bases : list):
     for base in bases:
