@@ -5,7 +5,10 @@ from . import convert
 
 # TODO: Extract prefix (0b, 0, 0x) before conversion to exclude it from max_value_length comparison
 
-settings = sublime.load_settings('c-base-converter.sublime-settings')
+settings = {}
+
+def plugin_loaded():
+    settings = sublime.load_settings('c-base-converter.sublime-settings')
 
 class ToBaseCommand(sublime_plugin.TextCommand):
     def run(self, edit : sublime.Edit, base : int):
@@ -17,7 +20,7 @@ class ToBaseCommand(sublime_plugin.TextCommand):
             if(val != None):
                 self.view.replace(edit, region, val)
 
-    def is_visible(self, base):
+    def is_visible(self, base : int):
         if not settings.get('context_menu_options_enabled', True):
             return False
 
@@ -37,7 +40,7 @@ class ToBasePromptCommand(sublime_plugin.WindowCommand):
     last_used_index = 1
 
     def run(self):
-        self.window.show_quick_panel(["Binary", "Octal", "Decimal",  "Hexidecimal"], self.on_done, 0, self.last_used_index, self.on_highlight)
+        self.window.show_quick_panel(["Binary", "Octal", "Decimal", "Hexidecimal"], self.on_done, 0, self.last_used_index, self.on_highlight)
 
     def on_highlight(self, index : int):
         # Don't change value when quick panel is first opened

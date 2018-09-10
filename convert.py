@@ -1,36 +1,32 @@
 import sublime
 import sublime_plugin
+import math
 
 supported_bases = [2, 8, 10, 16]
 
-settings = sublime.load_settings('c-base-converter.sublime-settings')
+settings = {}
 
-def from_base(s : str, bases : list):
-    for base in bases:
-        val = val_from_base(s, base)
-        if val != None:
-            return val
-    return None
+#sublime.error_message("!!")
 
-def val_from_base(s : str, base : int):
-    valid_input_format = True
+def plugin_loaded():
+    settings = sublime.load_settings('c-base-converter.sublime-settings')
 
-    if base == 2:
-        valid_input_format = s[:2].lower() == "0b"
-    if base == 8:
-        valid_input_format = s[0] == "0" and len(s) > 1
-    if base == 10:
-        valid_input_format = s[0] != "0" and s.isdigit()
-    if base == 16:
-        valid_input_format = s[:2].lower() == "0x"
-
-    if not valid_input_format:
-        return None
-
-    try:
-        return int(s, base)
-    except ValueError:
-        return None
+def get_base(s : str):
+    if len(s) > 2 and s[:2].lower() == "0b":
+        # Binary
+        return (2, 2)
+    elif len(s) > 2 and s[:2].lower() == "0x":
+        # Hexidecimal
+        return (2, 16)
+    elif s[0] == "0":
+        #Octal
+        return (1, 8)
+    elif s.isnumeric():
+        # Decimal
+        return (0, 10)
+    else:
+        # Invalid
+        return (None, None)
 
 def split_suffix(s : str):
     u_count = 0
@@ -59,21 +55,28 @@ def to_base(s : str, base : int):
     if not len(s) > 0:
         return None
 
-    (s, suffix) = split_suffix(s)
+    (prefix_len, current_base) = get_base(s)
 
-    if s == None or len(s) > settings.get('max_value_length', 18):
+    if s == None or current_base == None:
         return None
 
-    bases = list(supported_bases)
+    (s, suffix) = split_suffix(s)
+
+    if not s:
+        return None
+
+    max_val = (2 ** settings.get('max_value_bits', 64)) - 1
+    max_len = math.ceil(math.log(max_val) / math.log(current_base))
+
+    if (len(s) - prefix_len) > max_len:
+        return None
+
+    if current_base == base:
+        return None
 
     try:
-        bases.remove(base)
+        val = int(s, current_base)
     except ValueError:
-        pass
-
-    val = from_base(s, bases)
-
-    if(val == None):
         return None
 
     return val_to_base(val, base) + suffix

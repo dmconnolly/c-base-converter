@@ -1,7 +1,7 @@
 {
-    // Max length of value, excluding prefix and suffix
-    "max_value_length": 18,
+    // Max bits in integer literal
+    "max_value_bits": 64,
 
     // Whether the right-click context menu options are enabled
-    "context_menu_options_enabled": true
+    "context_menu_options_enabled": false
 }
