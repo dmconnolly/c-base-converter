@@ -2,16 +2,18 @@ import sublime
 import sublime_plugin
 
 from . import convert
+from . import config
 
-# TODO: Extract prefix (0b, 0, 0x) before conversion to exclude it from max_value_length comparison
+stored_regions = []
+stored_values = []
 
-settings = {}
-
-def plugin_loaded():
-    settings = sublime.load_settings('c-base-converter.sublime-settings')
+# TODO: Fix quick panel quirks on exit and focus lost
 
 class ToBaseCommand(sublime_plugin.TextCommand):
     def run(self, edit : sublime.Edit, base : int):
+        if not config.settings:
+            return
+
         for region in self.view.sel():
             s = self.view.substr(region)
 
@@ -21,7 +23,16 @@ class ToBaseCommand(sublime_plugin.TextCommand):
                 self.view.replace(edit, region, val)
 
     def is_visible(self, base : int):
-        if not settings.get('context_menu_options_enabled', True):
+        if not config.settings or not config.settings.get('context_menu_options_enabled', True):
+            return False
+
+        base_enabled = False
+        for base_data in config.enabled_bases:
+            if base_data['value'] == base:
+                base_enabled = True
+                break
+
+        if not base_enabled:
             return False
 
         for region in self.view.sel():
@@ -33,31 +44,60 @@ class ToBaseCommand(sublime_plugin.TextCommand):
         return False
 
     def is_enabled(self):
-        return settings.get('context_menu_options_enabled', True)
+        return config.settings != None
 
 class ToBasePromptCommand(sublime_plugin.WindowCommand):
     first_opened = True
     last_used_index = 1
 
     def run(self):
-        self.window.show_quick_panel(["Binary", "Octal", "Decimal", "Hexidecimal"], self.on_done, 0, self.last_used_index, self.on_highlight)
+        if not config.settings:
+            return
+
+        options = []
+
+        for base_data in config.enabled_bases:
+            options.append(base_data['string'])
+
+        # Only option quick panel if any options are enabled
+        if options:
+            # Reset last_used_index if outside options list
+            if self.last_used_index >= len(options):
+                self.last_used_index = 0
+
+            self.highlighted_index = self.last_used_index
+
+            self.window.show_quick_panel(
+                options, # Options list
+                self.on_done, # On done handler
+                0, # Flags (bitwise OR of sublime.MONOSPACE_FONT and sublime.KEEP_OPEN_ON_FOCUS_LOST)
+                self.last_used_index, # Start index
+                self.on_highlight # On highlight handler
+            )
 
     def on_highlight(self, index : int):
         # Don't change value when quick panel is first opened
         if self.first_opened == True:
             self.first_opened = False
+            pass # Store current values
             return
 
-        base = convert.supported_bases[index]
+        base = config.enabled_bases[index]['value']
 
         if self.window.active_view():
             self.window.active_view().run_command("to_base", {"base": base})
 
     def on_done(self, index : int):
-        base = convert.supported_bases[index]
-
-        if self.window.active_view():
-            self.window.active_view().run_command("to_base", {"base": base})
-
         self.first_opened = True
-        self.last_used_index = index
+
+        if index == -1:
+            if config.settings.get('revert_on_quick_panel_exit', True):
+                pass # Load current values
+        else:
+            base = config.enabled_bases[index]['value']
+
+            if self.window.active_view():
+                pass
+                #self.window.active_view().run_command("to_base", {"base": base})
+
+            self.last_used_index = index

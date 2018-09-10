@@ -2,14 +2,9 @@ import sublime
 import sublime_plugin
 import math
 
-supported_bases = [2, 8, 10, 16]
-
-settings = {}
+from . import config
 
 #sublime.error_message("!!")
-
-def plugin_loaded():
-    settings = sublime.load_settings('c-base-converter.sublime-settings')
 
 def get_base(s : str):
     if len(s) > 2 and s[:2].lower() == "0b":
@@ -21,12 +16,9 @@ def get_base(s : str):
     elif s[0] == "0":
         #Octal
         return (1, 8)
-    elif s.isnumeric():
+    else:
         # Decimal
         return (0, 10)
-    else:
-        # Invalid
-        return (None, None)
 
 def split_suffix(s : str):
     u_count = 0
@@ -49,10 +41,7 @@ def split_suffix(s : str):
     return (s, suffix)
 
 def to_base(s : str, base : int):
-    if not base in supported_bases:
-        return None
-
-    if not len(s) > 0:
+    if not len(s) > 0 or not base in [base['value'] for base in config.bases]:
         return None
 
     (prefix_len, current_base) = get_base(s)
@@ -68,10 +57,7 @@ def to_base(s : str, base : int):
     max_val = (2 ** settings.get('max_value_bits', 64)) - 1
     max_len = math.ceil(math.log(max_val) / math.log(current_base))
 
-    if (len(s) - prefix_len) > max_len:
-        return None
-
-    if current_base == base:
+    if (len(s) - prefix_len) > max_len or current_base == base:
         return None
 
     try:

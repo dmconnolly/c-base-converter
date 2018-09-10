@@ -1,3 +1,8 @@
+// Default keybinds for c-base-converter
+
+// Commented out because it can be annoying to unbind keybinds overridden by plugins
+// Just copy the line below to user keymap file and modify key as necessary
+
 [
-    {"keys": ["ctrl+b"], "command": "to_base_prompt"}
+    // {"keys": ["ctrl+b"], "command": "to_base_prompt"}
 ]

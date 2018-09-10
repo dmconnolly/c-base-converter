@@ -22,63 +22,20 @@
                             },
                             { "caption": "-" },
                             {
-                                "command": "open_file",
-                                "args": {"file": "${packages}/c-base-converter/c-base-converter.sublime-settings"},
-                                "caption": "Settings – Default"
-                            },
-                            {
-                                "command": "open_file",
-                                "args": {"file": "${packages}/User/c-base-converter.sublime-settings"},
-                                "caption": "Settings – User"
-                            },
-                            { "caption": "-" },
-                            {
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/c-base-converter/Default (OSX).sublime-keymap",
-                                    "platform": "OSX"
+                                "command": "edit_settings", "args":
+                                {
+                                    "base_file": "${packages}/c-base-converter/c-base-converter.sublime-settings",
+                                    "default": "// These settings override the defaults in 'c-base-converter.sublime-settings'\n{\n\t$0\n}\n"
                                 },
-                                "caption": "Key Bindings – Default"
+                                "caption": "Settings"
                             },
                             {
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/c-base-converter/Default (Linux).sublime-keymap",
-                                    "platform": "Linux"
+                                "command": "edit_settings", "args":
+                                {
+                                    "base_file": "${packages}/c-base-converter/Default ($platform).sublime-keymap",
+                                    "default": "[\n\t$0\n]\n"
                                 },
-                                "caption": "Key Bindings – Default"
-                            },
-                            {
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/c-base-converter/Default (Windows).sublime-keymap",
-                                    "platform": "Windows"
-                                },
-                                "caption": "Key Bindings – Default"
-                            },
-                            {
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/User/Default (OSX).sublime-keymap",
-                                    "platform": "OSX"
-                                },
-                                "caption": "Key Bindings – User"
-                            },
-                            {
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/User/Default (Linux).sublime-keymap",
-                                    "platform": "Linux"
-                                },
-                                "caption": "Key Bindings – User"
-                            },
-                            {
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/User/Default (Windows).sublime-keymap",
-                                    "platform": "Windows"
-                                },
-                                "caption": "Key Bindings – User"
+                                "caption": "Key Bindings"
                             },
                             { "caption": "-" }
                         ]
