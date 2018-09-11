@@ -4,7 +4,7 @@ import sublime_plugin
 from . import convert
 from . import config
 
-# TODO: Fix quick panel quirks on exit and focus lost
+# TODO: Don't try to revert values when quick panel loses focus with only one value selected
 
 class ToBaseCommand(sublime_plugin.TextCommand):
     def run(self, edit : sublime.Edit, base : int):
@@ -45,8 +45,11 @@ class ToBaseCommand(sublime_plugin.TextCommand):
 
 class LoadStoredValuesCommand(sublime_plugin.TextCommand):
     def run(self, edit : sublime.Edit, values : list):
-        for s, region in zip(values, self.view.sel()):
-            self.view.replace(edit, region, s)
+        # Ensure that current user selection is still the same as when
+        # values were stored
+        if len(self.view.sel()) == len(values):
+            for s, region in zip(values, self.view.sel()):
+                self.view.replace(edit, region, s)
 
 class ToBasePromptCommand(sublime_plugin.WindowCommand):
     first_opened = True
@@ -102,11 +105,8 @@ class ToBasePromptCommand(sublime_plugin.WindowCommand):
 
         if index == -1:
             if config.settings.get('revert_on_quick_panel_exit', True):
-                # Ensure that current user selection is still the same
-                # if it is not, user probably clicked away from the quick_panel
-                if len(self.window.active_view().sel()) == len(self.stored_values):
-                    # Load initial values
-                    self.window.active_view().run_command("load_stored_values", {"values": self.stored_values})
+                # Load initial values
+                self.window.active_view().run_command("load_stored_values", {"values": self.stored_values})
         else:
             base = config.enabled_bases[index]['value']
 
