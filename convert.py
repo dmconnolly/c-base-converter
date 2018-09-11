@@ -4,8 +4,6 @@ import math
 
 from . import config
 
-#sublime.error_message("!!")
-
 def get_base(s : str):
     if len(s) > 2 and s[:2].lower() == "0b":
         # Binary

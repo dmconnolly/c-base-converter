@@ -1,3 +1,5 @@
+// Default settings
+
 {
     // Max bits in integer literal
     "max_value_bits": 64,
@@ -11,11 +13,6 @@
 
     // If enabled, values changed will be reverted if the quick panel is exited (escape pressed)
     "revert_changes_on_quick_panel_exit": true,
-
-    // If enabled, values changed will be reverted if the quick panel loses focus
-    // i.e. clicking away from the quick panel after highlighting an option but without
-    // selecting it or pressing escape
-    "revert_changes_on_quick_panel_lost_focus": false,
 
     // Enable or disable base options in context menu and quick panel input selection
     "binary_enabled": true,

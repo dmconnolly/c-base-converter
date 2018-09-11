@@ -35,6 +35,7 @@ def plugin_loaded():
     settings = sublime.load_settings('c-base-converter.sublime-settings')
 
     enabled_bases = []
+
     for base in bases:
         if settings.get(base['settings_string'], True):
             enabled_bases.append(base)
