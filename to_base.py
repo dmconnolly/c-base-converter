@@ -4,8 +4,6 @@ import sublime_plugin
 from . import convert
 from . import config
 
-# TODO: Don't try to revert values when quick panel loses focus with only one value selected
-
 class ToBaseCommand(sublime_plugin.TextCommand):
     def run(self, edit : sublime.Edit, base : int):
         if not config.settings:
@@ -45,11 +43,20 @@ class ToBaseCommand(sublime_plugin.TextCommand):
 
 class LoadStoredValuesCommand(sublime_plugin.TextCommand):
     def run(self, edit : sublime.Edit, values : list):
+        regions = self.view.sel()
+
         # Ensure that current user selection is still the same as when
-        # values were stored
-        if len(self.view.sel()) == len(values):
-            for s, region in zip(values, self.view.sel()):
-                self.view.replace(edit, region, s)
+        if len(regions) != len(values):
+            return
+
+        # If user clicks away from quick_panel, it will lose focus but new selection will be empty
+        # check for this case to avoid ambiguity
+        if len(values) == 1 and regions[0].empty():
+            return
+
+        # Replace selection with initial values
+        for s, region in zip(values, regions):
+            self.view.replace(edit, region, s)
 
 class ToBasePromptCommand(sublime_plugin.WindowCommand):
     first_opened = True
