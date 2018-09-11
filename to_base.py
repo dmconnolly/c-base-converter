@@ -4,9 +4,6 @@ import sublime_plugin
 from . import convert
 from . import config
 
-stored_regions = []
-stored_values = []
-
 # TODO: Fix quick panel quirks on exit and focus lost
 
 class ToBaseCommand(sublime_plugin.TextCommand):
@@ -46,9 +43,16 @@ class ToBaseCommand(sublime_plugin.TextCommand):
     def is_enabled(self):
         return config.settings != None
 
+class LoadStoredValuesCommand(sublime_plugin.TextCommand):
+    def run(self, edit : sublime.Edit, values : list):
+        for s, region in zip(values, self.view.sel()):
+            self.view.replace(edit, region, s)
+
 class ToBasePromptCommand(sublime_plugin.WindowCommand):
     first_opened = True
     last_used_index = 1
+
+    stored_values = []
 
     def run(self):
         if not config.settings:
@@ -79,7 +83,13 @@ class ToBasePromptCommand(sublime_plugin.WindowCommand):
         # Don't change value when quick panel is first opened
         if self.first_opened == True:
             self.first_opened = False
-            pass # Store current values
+
+            # Store initial values
+            self.stored_values = []
+            if self.window.active_view():
+                for region in self.window.active_view().sel():
+                    self.stored_values.append(self.window.active_view().substr(region))
+
             return
 
         base = config.enabled_bases[index]['value']
@@ -92,7 +102,11 @@ class ToBasePromptCommand(sublime_plugin.WindowCommand):
 
         if index == -1:
             if config.settings.get('revert_on_quick_panel_exit', True):
-                pass # Load original values
+                # Ensure that current user selection is still the same
+                # if it is not, user probably clicked away from the quick_panel
+                if len(self.window.active_view().sel()) == len(self.stored_values):
+                    # Load initial values
+                    self.window.active_view().run_command("load_stored_values", {"values": self.stored_values})
         else:
             base = config.enabled_bases[index]['value']
 
