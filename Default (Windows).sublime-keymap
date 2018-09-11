@@ -4,5 +4,5 @@
 // Just copy the line below to user keymap file and modify key as necessary
 
 [
-    // {"keys": ["ctrl+b"], "command": "to_base_prompt"}
+    //{"keys": ["ctrl+b"], "command": "to_base_prompt"}
 ]

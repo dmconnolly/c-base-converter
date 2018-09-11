@@ -92,12 +92,11 @@ class ToBasePromptCommand(sublime_plugin.WindowCommand):
 
         if index == -1:
             if config.settings.get('revert_on_quick_panel_exit', True):
-                pass # Load current values
+                pass # Load original values
         else:
             base = config.enabled_bases[index]['value']
 
             if self.window.active_view():
-                pass
-                #self.window.active_view().run_command("to_base", {"base": base})
+                self.window.active_view().run_command("to_base", {"base": base})
 
             self.last_used_index = index
