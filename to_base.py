@@ -4,8 +4,6 @@ import sublime_plugin
 from . import convert
 from . import config
 
-# TODO: Fix settings not changing anything
-
 class ToBaseCommand(sublime_plugin.TextCommand):
     def run(self, edit : sublime.Edit, base : int):
         if not config.settings():
