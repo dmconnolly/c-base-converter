@@ -4,6 +4,13 @@
     // Max bits in integer literal
     "max_value_bits": 64,
 
+    // Enable or disable base options in context menu and quick panel input selection
+    "binary_enabled": true,
+    "octal_enabled": false,
+    "decimal_enabled": true,
+    "hexidecimal_enabled": true,
+
+
     // Whether the right-click context menu options are enabled
     "context_menu_options_enabled": true,
 
@@ -11,12 +18,10 @@
     // If enabled, extra processing is needed when context menu is opened
     "dynamic_context_menu": true,
 
-    // If enabled, values changed will be reverted if the quick panel is exited (escape pressed)
-    "revert_changes_on_quick_panel_exit": true,
 
-    // Enable or disable base options in context menu and quick panel input selection
-    "binary_enabled": true,
-    "octal_enabled": false,
-    "decimal_enabled": true,
-    "hexidecimal_enabled": true
+    // Preview changes on quick panel highlight
+    "preview_changes_on_quick_panel_highlight": true,
+
+    // If enabled, preview values will be reverted if the quick panel is exited (escape pressed)
+    "revert_changes_on_quick_panel_exit": true,
 }
