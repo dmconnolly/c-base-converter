@@ -8,7 +8,7 @@ from . import config
 
 class ToBaseCommand(sublime_plugin.TextCommand):
     def run(self, edit : sublime.Edit, base : int):
-        if not config.settings:
+        if not config.settings():
             return
 
         for region in self.view.sel():
@@ -20,11 +20,11 @@ class ToBaseCommand(sublime_plugin.TextCommand):
                 self.view.replace(edit, region, val)
 
     def is_visible(self, base : int):
-        if not config.settings or not config.settings.get('context_menu_options_enabled', True):
+        if not config.settings() or not config.settings().get('context_menu_options_enabled', True):
             return False
 
         base_enabled = False
-        for base_data in config.enabled_bases:
+        for base_data in config.bases():
             if base_data['value'] == base:
                 base_enabled = True
                 break
@@ -41,7 +41,7 @@ class ToBaseCommand(sublime_plugin.TextCommand):
         return False
 
     def is_enabled(self):
-        return config.settings != None
+        return config.settings() != None
 
 class LoadStoredValuesCommand(sublime_plugin.TextCommand):
     def run(self, edit : sublime.Edit, values : list):
@@ -67,12 +67,12 @@ class ToBasePromptCommand(sublime_plugin.WindowCommand):
     stored_values = []
 
     def run(self):
-        if not config.settings:
+        if not config.settings():
             return
 
         options = []
 
-        for base_data in config.enabled_bases:
+        for base_data in config.bases():
             options.append(base_data['string'])
 
         # Only option quick panel if any options are enabled
@@ -104,7 +104,7 @@ class ToBasePromptCommand(sublime_plugin.WindowCommand):
 
             return
 
-        base = config.enabled_bases[index]['value']
+        base = config.bases()[index]['value']
 
         if self.window.active_view():
             self.window.active_view().run_command("to_base", {"base": base})
@@ -113,11 +113,11 @@ class ToBasePromptCommand(sublime_plugin.WindowCommand):
         self.first_opened = True
 
         if index == -1:
-            if config.settings.get('revert_on_quick_panel_exit', True):
+            if config.settings().get('revert_on_quick_panel_exit', True):
                 # Load initial values
                 self.window.active_view().run_command("load_stored_values", {"values": self.stored_values})
         else:
-            base = config.enabled_bases[index]['value']
+            base = config.bases()[index]['value']
 
             if self.window.active_view():
                 self.window.active_view().run_command("to_base", {"base": base})

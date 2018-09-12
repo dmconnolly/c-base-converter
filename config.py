@@ -1,7 +1,9 @@
 import sublime
 import sublime_plugin
 
-bases = [
+_loaded = False
+
+_bases = [
     {
         'value': 2,
         'string': 'Binary',
@@ -24,18 +26,23 @@ bases = [
     }
 ]
 
-enabled_bases = []
-
-settings = None
-
 def plugin_loaded():
-    global settings
-    global enabled_bases
+    global _loaded
+    _loaded = True
 
-    settings = sublime.load_settings('c-base-converter.sublime-settings')
+def plugin_unloaded():
+    global _loaded
+    _loaded = False
 
-    enabled_bases = []
+def settings():
+    if not _loaded:
+        return None
+    return sublime.load_settings('c-base-converter.sublime-settings')
 
-    for base in bases:
-        if settings.get(base['settings_string'], True):
-            enabled_bases.append(base)
+def bases():
+    s = settings()
+
+    if not s:
+        return []
+
+    return [base for base in _bases if s.get(base['settings_string'], True)]

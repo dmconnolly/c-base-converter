@@ -39,7 +39,7 @@ def split_suffix(s : str):
     return (s, suffix)
 
 def to_base(s : str, base : int):
-    if not len(s) > 0 or not base in [base['value'] for base in config.bases]:
+    if not len(s) > 0 or not base in [base['value'] for base in config.bases()]:
         return None
 
     (prefix_len, current_base) = get_base(s)
@@ -52,7 +52,7 @@ def to_base(s : str, base : int):
     if not s:
         return None
 
-    max_val = (2 ** config.settings.get('max_value_bits', 64)) - 1
+    max_val = (2 ** config.settings().get('max_value_bits', 64)) - 1
     max_len = math.ceil(math.log(max_val) / math.log(current_base))
 
     if (len(s) - prefix_len) > max_len or current_base == base:
