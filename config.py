@@ -21,8 +21,8 @@ _bases = [
     },
     {
         'value': 16,
-        'string': 'Hexidecimal',
-        'settings_string': 'hexidecimal_enabled'
+        'string': 'Hexadecimal',
+        'settings_string': 'hexadecimal_enabled'
     }
 ]
 

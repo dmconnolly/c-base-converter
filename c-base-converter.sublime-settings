@@ -8,7 +8,7 @@
     "binary_enabled": true,
     "octal_enabled": false,
     "decimal_enabled": true,
-    "hexidecimal_enabled": true,
+    "hexadecimal_enabled": true,
 
 
     // Whether the right-click context menu options are enabled

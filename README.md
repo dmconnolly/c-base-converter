@@ -2,7 +2,7 @@
 
 Plugin for Sublime Text 3.
 
-Allows conversion of C and C++ [integer literals](https://en.cppreference.com/w/cpp/language/integer_literal) between different bases (binary, octal, decimal and hexidecimal).
+Allows conversion of C and C++ [integer literals](https://en.cppreference.com/w/cpp/language/integer_literal) between different bases (binary, octal, decimal and hexadecimal).
 
 C currently only has support for binary literals via a [GNU extension](https://gcc.gnu.org/onlinedocs/gcc/Binary-constants.html).
 

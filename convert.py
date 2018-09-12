@@ -9,7 +9,7 @@ def get_base(s : str):
         # Binary
         return (2, 2)
     elif len(s) > 2 and s[:2].lower() == "0x":
-        # Hexidecimal
+        # Hexadecimal
         return (2, 16)
     elif s[0] == "0":
         #Octal
