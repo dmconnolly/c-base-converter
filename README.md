@@ -6,6 +6,8 @@ Allows conversion of C and C++ [integer literals](https://en.cppreference.com/w/
 
 Uses quick panel selection input and optional context menus, supports multiple selection.
 
+---
+
 C currently only has support for binary literals via a [GNU extension](https://gcc.gnu.org/onlinedocs/gcc/Binary-constants.html).
 
 C++ supports binary literals as of [C++14](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3472.pdf).
