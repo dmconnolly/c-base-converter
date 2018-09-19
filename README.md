@@ -1,5 +1,7 @@
 # c-base-converter
 
+![example](https://user-images.githubusercontent.com/13100166/45773257-c0e61380-bc41-11e8-943f-25876251ea02.gif)
+
 Plugin for Sublime Text 3.
 
 Allows conversion of C and C++ [integer literals](https://en.cppreference.com/w/cpp/language/integer_literal) between different bases (binary, octal, decimal and hexadecimal).
